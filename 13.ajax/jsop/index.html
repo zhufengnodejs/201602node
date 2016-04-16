@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="query()">查询</button>
+<ul id="content">
+
+</ul>
+</body>
+<script>
+    function load(data){
+        console.log(data);
+        var ul = document.querySelector('#content');
+        data.forEach(function(item){
+            var li = document.createElement('li');
+            li.innerHTML = item.name;
+            ul.appendChild(li);
+        })
+        var scripts = document.getElementsByTagName('script');
+        document.body.removeChild(scripts[scripts.length-1]);
+
+    }
+</script>
+<script>
+    function query(){
+        var script = document.createElement('script');
+        script.src = 'http://localhost:9090/ajax?keyword=z';
+        document.body.appendChild(script);
+    }
+</script>
+</html>

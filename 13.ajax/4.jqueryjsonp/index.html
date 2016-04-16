@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="//cdn.bootcss.com/jquery/2.0.2/jquery.min.js"></script>
+</head>
+<body>
+<input type="text" id="keyword" onchange="search()">
+<ul id="list">
+
+</ul>
+</body>
+<script>
+    function search(){
+        var qsData = { 'wd': document.querySelector('#keyword').value,'cb': 'getData'};
+        $.ajax({
+            async: false,
+            url: "http://suggestion.baidu.com/su",
+            type: "GET",
+            dataType: 'jsonp',
+            jsonp: 'jsoncallback',
+            data: qsData,
+            timeout: 5000
+        });
+    }
+    function getData(data){
+        console.log(data);
+    }
+
+</script>
+</html>
