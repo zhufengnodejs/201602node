@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="content"></div>
+</body>
+<script>
+  //1.创建AJAX对象 0
+  var xhr = new XMLHttpRequest;
+  //2. 初始化
+  xhr.open('GET','/ajax',false);
+
+  //3.注册回调监听 1
+  xhr.onreadystatechange = function(){
+      if(xhr.readyState == 4){
+          console.log(xhr.status,xhr.statusText);
+          console.log(xhr.responseText);
+      }
+  }
+  //4. 发送数据，真正向后台发请求 现在没有请求体
+  console.log('start send');
+  xhr.send();
+  console.log('end send');
+</script>
+</html>

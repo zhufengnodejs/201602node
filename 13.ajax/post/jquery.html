@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="form" action="" enctype="application/x-www-form-urlencoded">
+    用户名:<input type="text" name="username">
+    密码:<input type="text" name="password">
+    <button onclick="reg()">注册</button>
+</form>
+<div id="username"></div>
+</body>
+<script>
+    window.onload = function(){
+        $.ajax({
+            method: 'get',//请求的方法
+            url: '/ajax',//请求的url
+            data: {name:"zfpx"},//发送的数据
+            processData: true,//是否处理数据,是否把对象转成查询字符串
+            dataType: 'json',//返回的数据类型
+            cache: false,//是否缓存 不缓存 ts=Date.now()
+            async: true,//是否异步
+            username: 'zfpx',//用户名
+            password: '123456',//密码
+            timeout: 300,//超时毫秒数
+            headers: {age:'22222'},//自定义头 setRequestHeader
+            context: document.querySelector('#username'),//上下文 success error执行时中的this指向谁
+        }).done(function (result) {//成功处理
+            this.innerHTML = result;
+        }).fail(function (err,headers) {//错误处理
+            console.log('promise error',err,headers);
+        });
+    }
+</script>
+</html>
