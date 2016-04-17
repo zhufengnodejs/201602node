@@ -13,7 +13,7 @@ app.get('/users',function(req,res){
     var start = (pageNum-1)*pageSize;
     var end = pageNum*pageSize;
     var type = req.query.type=='desc'?-1:1;
-    var users = require(db);
+    var users = JSON.parse(fs.readFileSync(db,'utf8'));
     var users = users.filter(function(user){
         return user.name.indexOf(keyword) !=-1;
     }).sort(function(a,b){
@@ -24,7 +24,7 @@ app.get('/users',function(req,res){
 //获取某个对象详情
 app.get('/users/:id',function(req,res){
    var id = req.params.id;
-   var users = require(db);
+    var users = JSON.parse(fs.readFileSync(db,'utf8'));
    var user = users.filter(function(user){
        return user.id == id;
    })[0];
@@ -37,7 +37,7 @@ app.get('/users/:id',function(req,res){
 //增加一个用户
 app.post('/users',function(req,res){
   var user = req.body;
-  var users = require(db);
+    var users = JSON.parse(fs.readFileSync(db,'utf8'));
   user.id = users[users.length-1].id+1;
   users.push(user);
   fs.writeFile(db,JSON.stringify(users),function(err){
@@ -47,7 +47,7 @@ app.post('/users',function(req,res){
 //完整更新 请求体里的对象是完整的对象，会整体覆盖原来的对象
 app.put('/users/:id',function(req,res){
     var newUser = req.body;
-    var users = require(db);
+    var users = JSON.parse(fs.readFileSync(db,'utf8'));
     users = users.map(function(user){
         if(user.id == req.params.id){
             return newUser;
@@ -66,7 +66,7 @@ app.put('/users/:id',function(req,res){
 //4.把修改后的对象发送给客户端
 app.patch('/users/:id',function(req,res){
     var newUser = req.body;
-    var users = require(db);
+    var users = JSON.parse(fs.readFileSync(db,'utf8'));
     users = users.map(function(user){
         if(user.id == req.params.id){
             for(var attr in newUser){
@@ -87,7 +87,7 @@ app.patch('/users/:id',function(req,res){
 
 app.delete('/users/:id',function(req,res){
     var id = req.params.id;
-    var users = require(db);
+    var users = JSON.parse(fs.readFileSync(db,'utf8'));
     var users = users.filter(function(user){
         return user.id != id;
     });
