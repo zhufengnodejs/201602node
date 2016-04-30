@@ -21,15 +21,19 @@
                     <option value="-name">按名称倒序</option>
                 </select>
             </td>
-
-
+        </tr>
+        <tr>
+            <td colspan="3">分页
+                当前页<input type="text" ng-model="pageNumber">
+                每页条数<input type="text" ng-model="pageSize">
+            </td>
         </tr>
         <tr>
             <td>ID</td>
             <td>名称</td>
             <td>操作</td>
         </tr>
-        <tr ng-repeat="book in books|filter:search|orderBy:order|limitTo:limit">
+        <tr ng-repeat="book in books|page:pageNumber:pageSize">
             <td>{{book.id}}</td>
             <td>{{book.name}}</td>
             <td><button class="btn btn-warning" ng-click="update(book)">更新</button><button class="btn btn-danger" ng-click="delete(book)">删除</button></td>
@@ -63,6 +67,13 @@
                     }
                 });
     });
+    angular.module('zfpxMod').filter('page',function(){
+        return function(input,pageNumber,pageSize){
+            var start = (pageNumber-1)*pageSize;
+            var end = start + pageSize;
+            return input.slice(start,end);
+        }
+    });
     //定义控制器，注入这个服务
     angular.module('zfpxMod').controller('bookCtrl',function($scope,bookService){
 
@@ -90,6 +101,8 @@
             }
 
         }
+        $scope.pageNumber =  1;
+        $scope.pageSize = 1;
         $scope.delete = function(book){
             bookService.delete(book).$promise.then(function(result){
                 $scope.books = $scope.books.filter(function(current){
