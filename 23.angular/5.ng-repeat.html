@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.css">
 </head>
 <body>
 <!-- 指令 可以是属性 -->
 <div ng-controller="zfpxCtrl">
- <h1>{{name+1}}</h1>
- <span ng-bind="name+1+2"></span>
+  <table class="table table-responsive">
+      <tr><td>商品名称</td><td>商品价格</td><td>商品数量</td><td>商品金额</td></tr>
+      <tr ng-repeat="item in items"><td>{{item.name}}</td><td>{{item.price}}</td><td><input type="text" ng-model="item.amount"></td><td>{{item.price * item.amount}}</td></tr>
+      <tr><td>总金额:{{total()}}</td><td><input type="text" ng-model="discount"></td><td>折后金额:{{total()*(discount?discount:1)}}</td></tr>
+  </table>
+
 </div>
 </body>
 <!-- 引入JS脚本 -->
@@ -27,7 +32,24 @@
 angular.module('zfpxMod').controller('zfpxCtrl',function($scope){
       //控制器的作用就是为$scope初始化属性
       //$sopce 类似于数据模型 MODEL
-      $scope.name  ='zfpx';
+      $scope.items  = [{
+          name:'iphone7',
+          price:5000,
+          amount:1
+      },{
+          name:'华为P9',
+          price:3800,
+          amount:1
+      },{
+          name:'小牛电动M1',
+          price:3300,
+          amount:1
+      }];
+    $scope.total = function(){
+        return $scope.items.reduce(function(result,item){
+           return result+item.price*item.amount;
+        },0);
+    }
   });
 
 </script>

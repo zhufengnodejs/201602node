@@ -7,8 +7,9 @@
 <body>
 <!-- 指令 可以是属性 -->
 <div ng-controller="zfpxCtrl">
- <h1>{{name+1}}</h1>
- <span ng-bind="name+1+2"></span>
+ <button ng-click="show = !show">切换</button>
+    <p ng-show="show">ng-show</p>
+    <p ng-hide="show">ng-hide</p>
 </div>
 </body>
 <!-- 引入JS脚本 -->

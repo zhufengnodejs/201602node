@@ -1,14 +1,23 @@
 <!DOCTYPE html>
+<!--rootScope-->
 <html lang="en" ng-app="zfpxMod">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        div{
+            border:red 1px solid;
+        }
+    </style>
 </head>
 <body>
 <!-- 指令 可以是属性 -->
-<div ng-controller="zfpxCtrl">
- <h1>{{name+1}}</h1>
- <span ng-bind="name+1+2"></span>
+<div ng-controller="zfpxCtrl" ng-show="false">
+    父控制器：<span ng-bind="name"></span>
+     <div ng-controller="childCtrl">
+         子控制器姓名：<span ng-bind="name"></span>
+         子控制器年龄：<span ng-bind="age"></span>
+     </div>
 </div>
 </body>
 <!-- 引入JS脚本 -->
@@ -27,8 +36,16 @@
 angular.module('zfpxMod').controller('zfpxCtrl',function($scope){
       //控制器的作用就是为$scope初始化属性
       //$sopce 类似于数据模型 MODEL
-      $scope.name  ='zfpx';
+      $scope.name  ='parent';
+    $scope.age  ='100';
   });
+angular.module('zfpxMod').controller('childCtrl',function($scope){
+    //控制器的作用就是为$scope初始化属性
+    //$sopce 类似于数据模型 MODEL
+    $scope.name  ='child';
+    $scope.age  ='200';
+    console.log($scope);
+});
 
 </script>
 </html>
