@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="zfpxMod">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/bootstrap.css">
+</head>
+<body >
+<div ng-controller="bookCtrl" class="container">
+    <table class="table table-responsive">
+        <tr>
+            <td>ID</td>
+            <td>名称</td>
+        </tr>
+        <tr ng-repeat="book in books">
+            <td>{{book.id}}</td>
+            <td>{{book.name}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="/angular.js"></script>
+<script src="/angular-resource.js"></script>
+<script>
+    angular.module('zfpxMod',['ngResource']);
+    //定义一个服务，它可以与后端的接口进行交互
+    angular.module('zfpxMod').factory('bookService',function($resource){
+        return $resource('/books/:id');
+    });
+    //定义控制器，注入这个服务
+    angular.module('zfpxMod').controller('bookCtrl',function($scope,bookService){
+
+        //当调用query的时候 其实是通过$http 向后端的 接口 /books 发起请求，然后把响应结果赋给$scope.books
+        $scope.books = bookService.query();
+    });
+
+</script>
+</html>

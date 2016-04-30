@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="zfpxMod">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body ng-controller="zfpxCtrl">
+匹配所有字段 <input type="text" ng-model="search.$"><br/>
+只匹配名称<input type="text" ng-model="search.name"><br/>
+只匹配年龄<input type="text" ng-model="search.age"><br/>
+严格相等匹配
+<input type="checkbox" ng-model="strict">
+<table>
+    <tr>
+        <td>名称</td>
+        <td>年龄</td>
+    </tr>
+    <tr ng-repeat="person in people|filter:search:strict">
+        <td>{{person.name}}</td><td>{{person.age}}</td>
+    </tr>
+</table>
+{{'abcde'|upperFirst:3}}
+</body>
+<script src="angular.js"></script>
+<script>
+    angular.module('zfpxMod',[]);
+    angular.module('zfpxMod').filter('upperFirst',function(){
+        /**
+         * 1. 输入值，也就是要过滤的值
+         * 2. 从第二个参数往后都是参数
+         */
+        return function(input,length){
+            return input.slice(0,length).toUpperCase()+input.slice(length);
+        }
+    });
+    angular.module('zfpxMod').controller('zfpxCtrl',function($scope){
+        $scope.people = [
+            {name:'node.js',age:6},
+            {name:'javascript',age:5},
+        ]
+    });
+
+</script>
+</html>

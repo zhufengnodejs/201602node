@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="zfpxMod">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.css">
+</head>
+<body ng-controller="zfpxCtrl">
+<ul class="nav nav-tabs">
+    <li role="presentation" ng-class="{'active':menu == 'home'}"><a ng-click="menu = 'home'" href="#/">首页</a></li>
+    <li role="presentation" ng-class="{'active':menu == 'user'}"><a ng-click="menu = 'user'" href="#/user">用户</a></li>
+    <li role="presentation" ng-class="{'active':menu == 'book'}" ><a ng-click="menu = 'book'" href="#/book">书籍</a></li>
+</ul>
+<div ng-view></div>
+</body>
+<script src="angular.js"></script>
+<script src="angular-route.js"></script>
+<script>
+    /**
+     * 1. angular的路由在客户端实现
+     * 1. 引入路由模块的JS文件
+     * 2.声明模块依赖
+     * 3. 配置路由
+     */
+    angular.module('zfpxMod',['ngRoute']);
+    angular.module('zfpxMod').controller('userCtrl',function($scope){
+        $scope.title = '用户';
+    });
+    angular.module('zfpxMod').config(function($routeProvider){
+        $routeProvider.when('/',{
+            templateUrl:'tmpl.html',
+            controller:function($scope){
+                $scope.title = '首页';
+            }
+        }).when('/user',{
+            templateUrl:'tmpl.html',
+            controller:'userCtrl'
+        }).when('/book',{
+            templateUrl:'tmpl.html',
+            controller:function($scope){
+                $scope.title = '书籍';
+            }
+        }).otherwise({
+            redirectTo:'/'
+        });
+    });
+    angular.module('zfpxMod').controller('zfpxCtrl',function($scope){
+        $scope.menu = 'home';
+    });
+</script>
+</html>

@@ -10,7 +10,7 @@
 <div ng-controller="zfpxCtrl">
   <table class="table table-responsive">
       <tr><td>商品名称</td><td>商品价格</td><td>商品数量</td><td>商品金额</td></tr>
-      <tr ng-repeat="item in items"><td>{{item.name}}</td><td>{{item.price}}</td><td><input type="text" ng-model="item.amount"></td><td>{{item.price * item.amount}}</td></tr>
+      <tr ng-repeat="item in items|orderBy:'-price':true"><td>{{item.name}}</td><td>{{item.price}}</td><td><input type="text" ng-model="item.amount"></td><td>{{item.price * item.amount}}</td></tr>
       <tr><td>总金额:{{total()}}</td><td><input type="text" ng-model="discount"></td><td>折后金额:{{total()*(discount?discount:1)}}</td></tr>
   </table>
 

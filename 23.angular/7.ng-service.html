@@ -10,12 +10,15 @@
 <div ng-controller="zfpxCtrl">
   <table class="table table-responsive">
       <tr><td>商品名称</td><td>商品价格</td><td>商品数量</td><td>商品金额</td><td>操作</td></tr>
-      <tr ng-repeat="item in items"><td>{{item.name}}</td><td>{{item.price}}</td><td><input type="text" ng-model="item.amount"></td><td>{{item.price * item.amount}}</td><td>
+      <tr ng-repeat="item in items"><td>{{item.name}}</td><td>{{item.price}}</td><td><input type="text" ng-model="item.amount"></td><td>{{item.price * item.amount | currency:'¥'}}</td><td>
           <button ng-click="remove(item)">删除</button>
       </td></tr>
       <tr><td>总金额:{{total()}}</td><td><input type="text" ng-model="discount"></td><td>折后金额:{{total()*(discount?discount:1)}}</td></tr>
   </table>
-
+    <span >{{1288323623006 | date:'yyyy-MM-dd HH:mm:ss Z'}}</span>
+    <pre>{{ {'name':'value',age:6} | json }}</pre>
+    {{[1,2,3,4,5]|limitTo:3 }}
+{{'123000.123'|number:0}}
 </div>
 </body>
 <!-- 引入JS脚本 -->
