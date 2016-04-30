@@ -33,13 +33,23 @@
 //依赖注入 我们定义控制器的时候只需要在参数列表里声明$scope即可，
 //声明之后就可以在函数中使用。它由容器也就是angular容器帮我们实例化
 //控制器
-angular.module('zfpxMod').controller('zfpxCtrl',function($scope){
+var http1;
+var http2;
+angular.module('zfpxMod').controller('zfpxCtrl',function($scope,$http){
+    $http.custom = 'custom';
+    http1 = $http;
       //控制器的作用就是为$scope初始化属性
       //$sopce 类似于数据模型 MODEL
       $scope.name  ='parent';
     $scope.age  ='100';
   });
-angular.module('zfpxMod').controller('childCtrl',function($scope){
+angular.module('zfpxMod').controller('childCtrl',function($scope,$http){
+    http2 = $http;
+
+    setTimeout(function(){
+        console.log(http1 === http2);
+        console.log($http.custom);
+    })
     //控制器的作用就是为$scope初始化属性
     //$sopce 类似于数据模型 MODEL
     $scope.name  ='child';
