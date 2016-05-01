@@ -4,17 +4,33 @@
     <meta charset="UTF-8">
     <title>珠峰聊天室</title>
     <link rel="stylesheet" href="bootstrap.css">
+    <style>
+        span{
+            color:blue;
+            cursor:pointer;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="panel-default">
         <div class="panel-heading">
-            欢迎来到聊天室
+            <div>欢迎加入房间</div>
+            <button onclick="enter('fashion')">时尚前沿</button>
+            <button onclick="enter('tech')">科技进展</button>
         </div>
         <div class="panel-body">
-            <ul class="list-group" id="content">
+            <div class="col-xs-9">
+                <ul class="list-group" id="content">
 
-            </ul>
+                </ul>
+            </div>
+            <div class="col-xs-3">
+                <ul class="list-group" id="users">
+
+                </ul>
+            </div>
+
         </div>
         <div class="pandel-footer">
             <div class="col-xs-9">
@@ -31,19 +47,41 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
     //连接上服务器
-    var socket = io();
+    var socket = io('http://localhost:8080/');
+    socket.emit('users');
+    function enter(room){
+        socket.emit('join',room);
+    }
+
     function append(msg){
-        $('#content').append('<li class="list-group-item">'+msg+'</li>');
+        $('#content').append('<li class="list-group-item"><span>'+msg.user+'</span>:'+msg.content+'</li>');
     }
     socket.on('connect',function(){
-        append('连接成功');
+        append({user:'系统',content:'连接成功'});
     });
     socket.on('message',function(msg){
         append(msg);
     });
+    socket.on('users',function(users){
+        var userList = $('#users');
+        userList.html('');
+        users.forEach(function(user){
+            userList.append('<li class="list-group-item"><span>'+user+'</span></li>');
+        });
+    });
     $('#sendBtn').click(function(){
         var msg = $('#msg').val();
         socket.send(msg);
+        $('#msg').val('');
     });
+    $('#msg').keypress(function(e){
+        var ch = e.charCode || e.keyCode || e.which;
+        if(ch == 13){
+            $('#sendBtn').click();
+        }
+    });
+    $('body').delegate('ul li span','click',function(){
+        $('#msg').val('@'+$(this).text()+' ');
+    })
 </script>
 </html>
