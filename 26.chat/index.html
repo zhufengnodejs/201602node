@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>珠峰聊天室</title>
+    <link rel="stylesheet" href="bootstrap.css">
+</head>
+<body>
+<div class="container">
+    <div class="panel-default">
+        <div class="panel-heading">
+            欢迎来到聊天室
+        </div>
+        <div class="panel-body">
+            <ul class="list-group" id="content">
+
+            </ul>
+        </div>
+        <div class="pandel-footer">
+            <div class="col-xs-9">
+                <input type="text" class="form-control" id="msg">
+            </div>
+            <div class="col-xs-3">
+                <button class="btn btn-primary" type="button" id="sendBtn">发言</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="jquery.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    //连接上服务器
+    var socket = io();
+    function append(msg){
+        $('#content').append('<li class="list-group-item">'+msg+'</li>');
+    }
+    socket.on('connect',function(){
+        append('连接成功');
+    });
+    socket.on('message',function(msg){
+        append(msg);
+    });
+    $('#sendBtn').click(function(){
+        var msg = $('#msg').val();
+        socket.send(msg);
+    });
+</script>
+</html>
