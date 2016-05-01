@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="radio" name="space" value="green" checked>绿空间<br/>
+<input type="radio" name="space" value="red" >红空间<br/>
+
+<button onclick="hua()">进入华山派</button>
+<button onclick="shao()">进入少林派</button>
+
+<input type="text" id="msg">
+<button onclick="send()">发消息</button>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    window.onload = function(){
+        //客户端连接服务器
+        var greensocket = io.connect('/green');
+        //监听 连接成功事件
+        greensocket.on('connect',function(){
+            console.log('green连接成功');
+        });
+        //监听服务器端发过来的消息
+        greensocket.on('message',function(msg){
+            console.log('green:',msg);
+        });
+
+        //客户端连接服务器
+        var redsocket = io.connect('/red');
+        //监听 连接成功事件
+        redsocket.on('connect',function(){
+            console.log('red连接成功');
+        });
+        //监听服务器端发过来的消息
+        redsocket.on('message',function(msg){
+            console.log('red:',msg);
+        });
+
+        window.hua = function(){
+            greensocket.emit('room','hua');
+        }
+
+        window.shao = function(){
+            greensocket.emit('room','shao');
+        }
+
+        window.send = function(){
+            var msg = document.querySelector('#msg').value;
+            var spaces = document.getElementsByName('space');
+            var space;
+            for(var i=0;i<spaces.length;i++){
+                if(spaces[i].checked){
+                    space = spaces[i].value;
+                    break;
+                }
+            }
+            if(space == 'red'){
+                redsocket.send(msg);
+            }else{
+                greensocket.send(msg);
+            }
+        }
+    }
+</script>
+</html>

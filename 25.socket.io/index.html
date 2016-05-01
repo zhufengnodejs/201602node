@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    window.onload = function(){
+        //客户端连接服务器
+        var socket = io.connect('/');
+        //监听 连接成功事件
+        socket.on('connect',function(){
+            document.write('连接成功');
+            //向服务器端发消息
+            socket.send('hello server');
+        });
+        //监听服务器端发过来的消息
+        socket.on('message',function(msg){
+            console.log(msg);
+        });
+    }
+</script>
+</html>
