@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="content"></div>
+</body>
+<script>
+  var xhr = new XMLHttpRequest();
+  function send(){
+      xhr.open('GET','/ajax',true);
+      xhr.onreadystatechange = function(){
+          if(xhr.readyState == xhr.DONE && xhr.status == 200){
+              var result = xhr.responseText;
+              if(result){
+                  document.querySelector('#content').innerHTML = result;
+                  send();
+              }
+          }
+      }
+      xhr.send();
+  }
+  send();
+</script>
+</html>
