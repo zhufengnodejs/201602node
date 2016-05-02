@@ -1,0 +1,24 @@
+doctype html
+html
+    head
+        title zhufengnodejs
+        style
+            |body{color:red}
+    body hello
+        div#content.row.container(name='zfpx')
+        - var courses = ['node','javascript'];
+        each course in courses
+            p #{course}
+        - for(var i=0;i<3;i++){
+          p=i
+        -}
+        - var person = {name:'zfpx',age:8};
+        each value,key in person
+            p #{key} #{value}
+        - for(var v in person)
+            p=person[v]
+        - var name = 'zfpx1'
+        if name == 'zfpx'
+            p=name
+        else
+            p 我不认识你
