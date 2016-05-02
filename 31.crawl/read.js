@@ -20,10 +20,37 @@ exports.category = function (url, callback) {
             }
             item.id = urlTool.parse(item.url, true).query.b;
             categories.push(item);
-            callback(null, categories);
         });
+        callback(null, categories);
     })
 }
+/*
 exports.category('http://top.baidu.com/category?c=10&fr=topcategory_c10',function(err,result){
     console.log(result);
-});
+});*/
+//http://top.baidu.com/buzz?b=1510&c=10
+exports.articles = function(url,cid,callback){
+  debug('读取分类下面的书籍',url);
+  var articles = [];
+    request({url: url, encoding: null}, function (err, res, body) {
+        //把一个gbk类型的buffer转成utf8字符串
+        body = iconv.decode(body, 'gbk');
+        var $ = cheerio.load(body);
+        $('.keyword a').each(function () {
+            var $me = $(this);
+            var item = {
+                name:$me.text().trim(),
+                url:$me.attr('href'),
+                cid:cid
+            }
+            if(item.name != 'search')
+                articles.push(item);
+        });
+        callback(null,articles);
+    })
+}
+/*
+
+exports.articles('http://top.baidu.com/buzz?b=1510&c=10',151,function(err,result){
+    console.log(result);
+});*/
