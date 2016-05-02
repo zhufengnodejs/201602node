@@ -2,13 +2,13 @@
  * 1.普通的promise
  * 2.promise可以注册多个then
  * 3.失败之后的回调
- * 4.
+ * 4. 
  **/
 
 var Defer = function(){
     var successes=[],errors=[],value,reason;
     return {
-        resolve:function(_value){
+        resolve:function(_value){ //2.txt
             value = _value;
             successes.forEach(function(success){
                 success(value);
@@ -23,8 +23,12 @@ var Defer = function(){
         },
         promise:{
             then:function(_callback){
-                successes.push(_callback);
-                return this;
+                var d = Defer();
+                var cb = function(_value){// 2.txt
+                    d.resolve(_callback(value));
+                }
+                successes.push(cb);
+                return d.promise;
             },
             error:function(_callback){
                 errors.push(_callback);
@@ -36,9 +40,9 @@ var Defer = function(){
 
 
 var fs = require('fs');
-function readFile(){
+function readFile(filename){
     var defer = Defer();
-    fs.readFile('1.txt','utf8',function(err,data){
+    fs.readFile(filename,'utf8',function(err,data){
         if(err){
             defer.reject(err);
         }else{
@@ -49,9 +53,9 @@ function readFile(){
 }
 
 //注册成功之后的回调函数
-var promise  = readFile();
-promise.then(function(data){
-    console.log('1',data);
-}).error(function(error){
-    console.error(error);
-});
+var promise  = readFile('1.txt');
+promise.then(function(data){// 2.txt
+    return fs.readFileSync(data,'utf8');
+}).then(function(data){
+   console.log(data);
+})
